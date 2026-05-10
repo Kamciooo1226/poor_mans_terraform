@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 from loguru import logger
 
-from poor_mans_terraform.models import ContainerResponse, ServerPayload
+from poor_mans_terraform.models.api import ContainerResponse, ServerPayload
 from poor_mans_terraform.services.docker_manager import (
     create_container,
     delete_container,

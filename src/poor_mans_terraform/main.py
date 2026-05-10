@@ -2,13 +2,13 @@ import uvicorn
 from fastapi import FastAPI
 
 from poor_mans_terraform.logger_conf import setup_logging
-from poor_mans_terraform.routers import containers
+from poor_mans_terraform.routers import resources
 
 setup_logging()
 
 
 app = FastAPI()
-app.include_router(containers.router, prefix="/containers", tags=["containers"])
+app.include_router(resources.router, prefix="/resources", tags=["containers"])
 
 
 def main():
