@@ -5,7 +5,6 @@ from loguru import logger
 
 def setup_logging():
     logger.remove()
-    # console config
     logger.add(
         sys.stdout,
         format="<green>{time:YYYY-MM-DD HH:MM:SS}</green> | <level>{level}</level> | {message}",
@@ -13,7 +12,6 @@ def setup_logging():
         enqueue=True,
         colorize=True,
     )
-    # file config
     logger.add(
         "logs/app.jsonl",
         rotation="10 MB",

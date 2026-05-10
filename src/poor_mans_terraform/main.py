@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-from poor_mans_terraform.logger_conf import setup_logging
+from poor_mans_terraform.config.logger_conf import setup_logging
 from poor_mans_terraform.routers import resources
 
 setup_logging()

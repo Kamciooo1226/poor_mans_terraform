@@ -16,7 +16,8 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[ContainerResponse])
-async def root() -> List[ContainerResponse]:
+async def list() -> List[ContainerResponse]:
+    """Lists all resources"""
     containers = list_containers(all_containers=True)
     containers_validated = [
         ContainerResponse.model_validate(c.attrs) for c in containers

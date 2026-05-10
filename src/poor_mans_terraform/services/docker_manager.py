@@ -1,7 +1,17 @@
+import tomllib
+
 import docker
+from docker.client import DockerClient
 from docker.errors import APIError, ImageNotFound, NotFound
 
-client = docker.from_env()
+client = docker.DockerClient(base_url="tcp://10.10.10.150:2375")
+
+
+def get_client(az: str) -> DockerClient:
+    with open("src/poor_mans_terraform/config/az_conf.toml", "rb") as config:
+        az_config = tomllib.load(config)
+        url = az_config["availability-zones"][az][""]
+        return DockerClient(url)
 
 
 def create_container(image: str, name: str, command: str | list[str]) -> dict:

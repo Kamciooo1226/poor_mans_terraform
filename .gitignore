@@ -6,11 +6,12 @@ dist/
 wheels/
 *.egg-info
 
-# Virtual environments
 .venv
 
-# dev docs
 dev_docs
 
-# logs
 logs
+
+.vagrant/
+
+trash
