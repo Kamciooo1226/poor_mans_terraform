@@ -7,6 +7,13 @@ requires-python = ">=3.13"
 dependencies = [
     "docker>=7.1.0",
     "fastapi>=0.136.1",
+    "loguru>=0.7.3",
     "sqlmodel>=0.0.38",
     "uvicorn>=0.46.0",
 ]
+[project.scripts]
+poor_mans_terraform = "poor_mans_terraform.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
