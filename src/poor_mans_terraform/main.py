@@ -1,6 +1,5 @@
 import uvicorn
-from fastapi import APIRouter, FastAPI, HTTPException
-from loguru import logger
+from fastapi import FastAPI
 
 from poor_mans_terraform.logger_conf import setup_logging
 from poor_mans_terraform.routers import containers

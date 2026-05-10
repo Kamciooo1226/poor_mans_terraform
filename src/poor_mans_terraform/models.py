@@ -1,5 +1,3 @@
-from typing import Any, Optional
-
 from pydantic import AliasPath, BaseModel, Field
 from pydantic.functional_validators import field_validator
 
@@ -8,7 +6,7 @@ class ServerPayload(BaseModel):
     image: str
     name: str
     command: str | list[str]
-    auto_remove: bool
+    # auto_remove: bool | None
 
     @field_validator("command")
     @classmethod
@@ -29,6 +27,12 @@ class ContainerResponse(BaseModel):
     image: str = Field(validation_alias=AliasPath("Config", "Image"))
     name: str = Field(validation_alias="Name")
     status: str = Field(validation_alias=AliasPath("State", "Status"))
+
+    @field_validator("name")
+    @classmethod
+    def strip_lslash(cls, v: str) -> str:
+        """Ensure no leading slash is present."""
+        return v.lstrip("/")
 
     class Config:
         from_attributes = True

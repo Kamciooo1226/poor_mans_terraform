@@ -16,50 +16,56 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[ContainerResponse])
-async def root():
+async def root() -> List[ContainerResponse]:
     containers = list_containers(all_containers=True)
-    return [c.attrs for c in containers]
+    containers_validated = [
+        ContainerResponse.model_validate(c.attrs) for c in containers
+    ]
+    logger.info(f"status: success, containers data: {containers_validated}")
+    return containers_validated
 
 
-@router.post("/create")
-async def create(payload: ServerPayload) -> dict:
+@router.post("/create", response_model=ContainerResponse, status_code=201)
+async def create(payload: ServerPayload) -> ContainerResponse:
     try:
-        container_id = create_container(payload.image, payload.name, payload.command)
-        logger.info(f"status: success, container_id: {container_id}")
-        return {"status": "success", "container_id": container_id}
+        container = create_container(payload.image, payload.name, payload.command)
+        container_validated = ContainerResponse.model_validate(container)
+        logger.info(f"status: success, container_data: {container_validated}")
+        return container_validated
     except ValueError as e:
         logger.exception(e)
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@router.get("/{id}")
-async def get(id: str) -> dict:
+@router.get("/{id}", response_model=ContainerResponse)
+async def get(id: str) -> ContainerResponse:
     try:
-        container_data = get_container(id)
-        logger.info(f"status: success, container_info: {container_data}")
-        return {"status": "success", "container_info": container_data}
+        container = get_container(id)
+        container_validated = ContainerResponse.model_validate(container)
+        logger.info(f"status: success, container_data: {container_validated}")
+        return container_validated
     except ValueError as e:
         logger.exception(e)
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@router.patch("/{id}")
-async def stop(id: str) -> dict:
+@router.patch("/{id}", response_model=ContainerResponse)
+async def stop(id: str) -> ContainerResponse:
     try:
-        container_data = stop_container(id)
-        logger.info(f"status: success, container_info: {container_data}")
-        return {"status": "success", "container_info": container_data}
+        container = stop_container(id)
+        container_validated = ContainerResponse.model_validate(container)
+        logger.info(f"status: success, container_data: {container_validated}")
+        return container_validated
     except ValueError as e:
         logger.exception(e)
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@router.delete("/{id}")
-async def delete(id: str) -> dict:
+@router.delete("/{id}", status_code=204)
+async def delete(id: str) -> None:
     try:
-        container_data = delete_container(id)
-        logger.info(f"status: success, deleted: {container_data}")
-        return {"status": "success", "deleted": container_data}
+        delete_container(id)
+        logger.info(f"status: success, deleted: {id}")
     except ValueError as e:
         logger.exception(e)
         raise HTTPException(status_code=404, detail=str(e))

@@ -4,12 +4,12 @@ from docker.errors import APIError, ImageNotFound, NotFound
 client = docker.from_env()
 
 
-def create_container(image: str, name: str, command: str | list[str]) -> str | None:
+def create_container(image: str, name: str, command: str | list[str]) -> dict:
     try:
         container = client.containers.run(
             image=image, command=command, name=name, detach=True
         )
-        return container.id
+        return container.attrs
     except ImageNotFound:
         raise ValueError(f"Image {image} not found")
     except APIError as e:
@@ -26,12 +26,7 @@ def list_containers(all_containers: bool = True) -> list:
 def get_container(id: str) -> dict:
     try:
         container = client.containers.get(id)
-        return {
-            "id": container.id,
-            "image": container.attrs["Config"]["Image"],
-            "name": container.name,
-            "status": container.status,
-        }
+        return container.attrs
     except NotFound:
         raise ValueError(f"The server with provided id: {id} does not exist")
 
@@ -41,22 +36,16 @@ def stop_container(id: str) -> dict:
         container = client.containers.get(id)
         container.stop()
         container.reload()
-        return {
-            "id": container.id,
-            "image": container.attrs["Config"]["Image"],
-            "name": container.name,
-            "status": container.status,
-        }
+        return container.attrs
     except NotFound:
         raise ValueError(f"The server with provided id: {id} does not exist")
 
 
-def delete_container(id: str) -> str:
+def delete_container(id: str) -> None:
     try:
         container = client.containers.get(id)
         if container.status == "running":
             raise RuntimeError("cannot remove a running container")
         container.remove()
-        return id
     except NotFound:
         raise ValueError(f"The server with provided id: {id} does not exist")
