@@ -21,7 +21,7 @@ Do keep in mind that this is completely useless for the most part - it's just ru
 
 ### 1. Start the VMs (OPTIONAL)
 
-[!NOTE]
+>[!NOTE]
 >You don't actually need to start the VMs at all. The app will run without them, omit the `az` query param and containers will run on your local machine.
 
 Three VMs simulating availability zones are defined in the `Vagrantfile`:
