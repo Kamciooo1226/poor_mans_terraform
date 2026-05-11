@@ -30,32 +30,33 @@ class NoSQLDB(Enum):
     """Hardcoded latest images for simplicity."""
 
     MONGO = "mongo"
-    COCKROACH = "cockroachdb"
+    COCKROACH = "cockroachdb/cockroach"
 
 
 class VectorDB(Enum):
-    """Hardcoded latest images for simplicity."""
-
-    QDRANT = "qdrant"
-    CHROMA = "chromadb"
+    QDRANT = "qdrant/qdrant"
+    CHROMA = "chromadb/chroma"
 
 
 class Server(Container):
     def __init__(self, name: str, distro: Distro):
         super().__init__(name, variant=distro)
+        self.command = "tail -f /dev/null"
 
 
 class RelationalDatabase(Container):
-    def __init__(self, name: str, env: dict, dbtype: RelationalDB):
+    def __init__(self, name: str, environment: dict, dbtype: RelationalDB):
         super().__init__(name, variant=dbtype)
-        self.env = env
+        self.environment = environment
 
 
 class NoSQLDatabase(Container):
-    def __init__(self, name: str, dbtype: NoSQLDB):
+    def __init__(self, name: str, environment: dict, dbtype: NoSQLDB):
         super().__init__(name, variant=dbtype)
+        self.environment = environment
 
 
 class VectorDatabase(Container):
-    def __init__(self, name: str, dbtype: VectorDB):
+    def __init__(self, name: str, environment: dict, dbtype: VectorDB):
         super().__init__(name, variant=dbtype)
+        self.environment = environment
