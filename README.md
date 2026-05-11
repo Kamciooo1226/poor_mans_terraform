@@ -1,6 +1,6 @@
 # Poor Man's Terraform
 
-A pet/learning project simulating basic cloud infrastructure management — think AWS EC2, RDS etc. - but running locally on KVM virtual machines with Docker.
+A pet/learning project simulating basic cloud infrastructure management - think AWS EC2, RDS etc. - but running locally on KVM virtual machines with Docker.
 
 Spin up VMs that simulate availability zones, then use the REST API to deploy containers across them.
 
@@ -19,14 +19,17 @@ Do keep in mind that this is completely useless for the most part - it's just ru
 
 ## Setup
 
-### 1. Start the VMs
+### 1. Start the VMs (OPTIONAL)
+
+[!NOTE]
+>You don't actually need to start the VMs at all. The app will run without them, omit the `az` query param and containers will run on your local machine.
 
 Three VMs simulating availability zones are defined in the `Vagrantfile`:
 
 ```
-az-1 → 10.10.10.150
-az-2 → 10.10.10.151
-az-3 → 10.10.10.152
+az-1 => 10.10.10.150
+az-2 => 10.10.10.151
+az-3 => 10.10.10.152
 ```
 
 Start them with:
